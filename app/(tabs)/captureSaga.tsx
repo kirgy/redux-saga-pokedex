@@ -13,6 +13,10 @@ import {
   setPokemonEncountered,
 } from "@/features/pokemon/pokemonReducer";
 import PokemonImage from "@/components/PokemonImage/PokemonImage";
+import {
+  pokemonCaptureAction,
+  pokemonEncounterAction,
+} from "@/features/pokemon/pokemonSaga";
 
 export default function TabOneScreen() {
   const dispatch = useDispatch();
@@ -30,43 +34,13 @@ export default function TabOneScreen() {
      *  - if yes, catch
      *  - if no, go back
      */
-    const randomPokemonNumber = randomInRange(1, 151);
-    pokemonAPI
-      .getPokemon(randomPokemonNumber)
-      .then(({ pokemon }) => {
-        // console.log(pokemon);
-        // set encounter in redux
-        dispatch(
-          setPokemonEncountered({
-            id: pokemon.id,
-            name: pokemon.name,
-            image: pokemon.sprites.front_default,
-          })
-        );
-      })
-      .catch((error) => {
-        // throw error
-        console.log("oh no!", error);
-        Alert.alert("Oh no! An unexpected error occured");
-      });
+    console.log(pokemonEncounterAction());
+    dispatch(pokemonEncounterAction());
   }, [dispatch]);
 
-  const throwMasterball = useCallback(
-    (pokemon: Pokemon) => {
-      Alert.alert(`You caught ${pokemon.name}!`);
-      dispatch(setPokemonCaptured(pokemon));
-    },
-    [dispatch]
-  );
-
   const requestCapture = useCallback(() => {
-    if (encounteredPokemon) {
-      Alert.alert(`Throw Master Ball?`, undefined, [
-        { text: "Go back", onPress: () => undefined },
-        { text: "Throw", onPress: () => throwMasterball(encounteredPokemon) },
-      ]);
-    }
-  }, [dispatch, throwMasterball, encounteredPokemon]);
+    dispatch(pokemonCaptureAction());
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>

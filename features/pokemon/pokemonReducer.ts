@@ -1,9 +1,10 @@
 import { RootState } from "@/redux/store";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type AppState = {
+export type PokemonState = {
   encounter?: Pokemon;
   captured: Array<Pokemon>;
+  loadingEncounter: boolean;
 };
 
 export type Pokemon = {
@@ -13,38 +14,46 @@ export type Pokemon = {
 };
 
 // initial state
-const initialState: AppState = {
+const initialState: PokemonState = {
   encounter: undefined,
   captured: [],
+  loadingEncounter: false,
 };
 
 // reducers
 const slice = createSlice({
-  name: "app",
+  name: "pokemon",
   initialState: initialState,
   reducers: {
     setPokemonEncountered: (state, { payload }: PayloadAction<Pokemon>) => {
-      console.log({ payload });
       state.encounter = payload;
     },
     setPokemonCaptured: (state, { payload }: PayloadAction<Pokemon>) => {
-      console.log({ payload });
       state.captured.push(payload);
       state.encounter = undefined;
+    },
+    setLoadingEncounter: (state, { payload }: PayloadAction<boolean>) => {
+      state.loadingEncounter = payload;
     },
   },
 });
 
 export const selectEncounter = (
   rootState: RootState
-): AppState["encounter"] => {
+): PokemonState["encounter"] => {
   return rootState.pokemon.encounter;
 };
 
-export const selectCaptured = (rootState: RootState): AppState["captured"] => {
+export const selectCaptured = (
+  rootState: RootState
+): PokemonState["captured"] => {
   return rootState.pokemon.captured;
 };
 
-export const { setPokemonEncountered, setPokemonCaptured } = slice.actions;
+export const {
+  setPokemonEncountered,
+  setPokemonCaptured,
+  setLoadingEncounter,
+} = slice.actions;
 
 export default slice.reducer;

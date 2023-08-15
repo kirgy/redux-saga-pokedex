@@ -1,6 +1,5 @@
 import { ScrollView, StyleSheet } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import { useSelector } from "react-redux";
 import { selectCaptured } from "@/features/pokemon/pokemonReducer";
@@ -14,9 +13,10 @@ export default function TabTwoScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      {capturedPokemon.map((pokemon) => {
+      {capturedPokemon.map((pokemon, index) => {
         return (
           <View
+            key={index}
             style={{
               width: "100%",
               justifyContent: "center",
