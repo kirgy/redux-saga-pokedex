@@ -1,23 +1,16 @@
-import * as pokemonAPI from "@/features/pokemon/pokemonApi";
+import * as pokemonAPI from "./pokemonApi";
 import {
   selectEncounter,
   setLoadingEncounter,
   setPokemonCaptured,
   setPokemonEncountered,
-} from "@/features/pokemon/pokemonReducer";
-import { promiseAlert } from "@/utils/promiseAlert";
-import { randomInRange } from "@/utils/randomInRange";
+} from "./pokemonReducer";
+import { promiseAlert } from "../../utils/promiseAlert";
+import { randomInRange } from "../../utils/randomInRange";
 import { createAction } from "@reduxjs/toolkit";
 import { Alert } from "react-native";
 import { SagaIterator } from "redux-saga";
-import {
-  all,
-  call,
-  put,
-  select,
-  takeEvery,
-  takeLatest,
-} from "redux-saga/effects";
+import { call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 const POKEMON_ACTIONS = {
   encounter: "pokemon/ENCOUNTER",
@@ -43,12 +36,12 @@ export function* encounterPokemon(): SagaIterator {
     | Awaited<ReturnType<typeof pokemonAPI.getPokemon>>
     | undefined = undefined;
 
-  const randomPokemonNumber = randomInRange(1, 151);
+  const randomPokemonNumber = yield call(randomInRange, 1, 151);
   console.log({ randomPokemonNumber });
   yield put(setLoadingEncounter(true));
 
   try {
-    console.log("Calling pokemonAPI.getPokemon");
+    console.log("Calling pokemonAPI.getPokemon", randomPokemonNumber);
     getPokemonResult = yield call(pokemonAPI.getPokemon, randomPokemonNumber);
   } catch (error) {
     // throw erroror

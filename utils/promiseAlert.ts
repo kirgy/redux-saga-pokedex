@@ -18,8 +18,8 @@ export const promiseAlert = ({
       title,
       message,
       [
-        { text: buttonConfirmTitle, onPress: () => resolve(true) },
         { text: buttonRejectTitle, onPress: () => resolve(false) },
+        { text: buttonConfirmTitle, onPress: () => resolve(true) },
       ],
       {
         cancelable: true,

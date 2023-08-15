@@ -14,7 +14,7 @@ export type Pokemon = {
 };
 
 // initial state
-const initialState: PokemonState = {
+export const initialState: PokemonState = {
   encounter: undefined,
   captured: [],
   loadingEncounter: false,
